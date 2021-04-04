@@ -34,28 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/")
 public class RequestController {
 	
-	public String proveedor_Nombre;
-	public String proveedor_RazonSocial;
-	public int proveedor_IdProveedor;
-	public String proveedor_Rut;
-	public String proveedor_Email;
-	
-	public String area_NombreArea;
-	public String area_Responsable;
-	public String area_Email;
-	public String area_Ceco;
-	
-	public String solicitante_NombreSolicitante;
-	public String solicitante_cargo;
-	public int solicitante_IdAprovador;
-	public String solicitante_Aprovador;
-	public String solicitante_Email;
-	
-	public int solicitud_Numero;
-	public int solicitud_Monto;
-	public float solicitud_iva;
-	public String solicitud_prioridad;
-	
 	
 	private HttpHeaders headers = new HttpHeaders();
 	
