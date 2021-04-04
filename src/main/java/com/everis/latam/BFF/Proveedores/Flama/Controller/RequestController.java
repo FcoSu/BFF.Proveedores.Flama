@@ -2,7 +2,7 @@ package com.everis.latam.BFF.Proveedores.Flama.Controller;
 
 import java.util.Arrays;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.everis.latam.BFF.Proveedores.Flama.Dto.AreaDto;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.ProveedorDto;
@@ -57,9 +58,10 @@ public class RequestController {
 	
 	
 	private HttpHeaders headers = new HttpHeaders();
-	/*
+	
+	
 	@Autowired
-	private RestTemplate restTemplate;*/
+	private RestTemplate restTemplate;
 	
 	@RequestMapping(value = URLs.inputURL, method = RequestMethod.POST, consumes= "application/json")
 	public ResponseEntity<Response> sendRequest(@RequestBody RequestDto req) throws BadRequestException{
@@ -100,10 +102,8 @@ public class RequestController {
 			
 			log.info("SOLICITANDO");
 			
-			/*
-			Response res = restTemplate.exchange(
-					URLs.targetURL, HttpMethod.POST, entity, Response.class).getBody();*/
-			Response res = null;
+			
+			Response res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, Response.class).getBody();	
 			
 			log.info("RESPONDIDO");
 			return new ResponseEntity<>(res, HttpStatus.OK);
