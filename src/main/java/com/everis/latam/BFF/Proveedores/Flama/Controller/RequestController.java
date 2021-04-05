@@ -44,6 +44,7 @@ public class RequestController {
 			ProveedorDto p = new ProveedorDto();
 			p = req.getProveedor();
 
+
 			AreaDto a = new AreaDto();
 			a = req.getArea();
 
@@ -60,18 +61,19 @@ public class RequestController {
 			reqDto.setSolicitante(ste);
 			reqDto.setSolicitud(stud);
 
-			log.info("REQUEST RECIBIDA");
+			log.info("Procedimiento correcto en RequestController, metodo: sendRequest");
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			HttpEntity<RequestDto> entity = new HttpEntity<>(reqDto, headers);
 
-			log.info("REALIZANDO SOLICITUD");
+			log.info("Realizando la solicitud al backend. . .");
 
 			ResponseDto res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, ResponseDto.class)
 					.getBody();
 
-			log.info("SOLICITUD REALIZADA Y RESPONDIDA");
+			log.info("Solicitud realizada y respondida correctamente.");
 			return new ResponseEntity<>(res, HttpStatus.OK);
 		} catch (Exception e) {
+			log.error("ERROR en RequestController metodo: sendRequest");
 			throw new BadRequestException(ExceptionPost.error);
 		}
 	}
