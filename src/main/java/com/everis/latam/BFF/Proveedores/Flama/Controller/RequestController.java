@@ -18,10 +18,10 @@ import org.springframework.web.client.RestTemplate;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.AreaDto;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.ProveedorDto;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.RequestDto;
+import com.everis.latam.BFF.Proveedores.Flama.Dto.ResolucionResponseDto;
+import com.everis.latam.BFF.Proveedores.Flama.Dto.ResponseDto;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.SolicitanteDto;
 import com.everis.latam.BFF.Proveedores.Flama.Dto.SolicitudDto;
-import com.everis.latam.BFF.Proveedores.Flama.Entity.Request;
-import com.everis.latam.BFF.Proveedores.Flama.Entity.Response;
 import com.everis.latam.BFF.Proveedores.Flama.Exception.BadRequestException;
 import com.everis.latam.BFF.Proveedores.Flama.Exception.ExceptionPost;
 import com.everis.latam.BFF.Proveedores.Flama.URLs.URLs;
@@ -42,26 +42,26 @@ public class RequestController {
 	private RestTemplate restTemplate;
 	
 	@RequestMapping(value = URLs.inputURL, method = RequestMethod.POST, consumes= "application/json")
-	public ResponseEntity<Response> sendRequest(@RequestBody RequestDto req) throws BadRequestException{
+	public ResponseEntity<ResponseDto> sendRequest(@RequestBody RequestDto req) throws BadRequestException{
 
 			
 		ProveedorDto p = new ProveedorDto();
 		p = req.getProveedor();
-		log.info("proveedor: "+p);
+
 		
 		
 		AreaDto a = new AreaDto();
 		a = req.getArea();
-		log.info("area: "+a);
+	
 		
 		SolicitanteDto ste = new SolicitanteDto();
 		ste = req.getSolicitante();
-		log.info("solicitante: "+ste);
+
 		
 
 		SolicitudDto stud = new SolicitudDto();
 		stud = req.getSolicitud();
-		log.info("solicitud: "+stud);
+
 		
 		RequestDto reqDto = new RequestDto();
 		reqDto.setArea(a);
@@ -70,7 +70,7 @@ public class RequestController {
 		reqDto.setSolicitante(ste);
 		reqDto.setSolicitud(stud);
 		
-		log.info("Request completa = "+reqDto);
+		log.info("REQUEST RECIBIDA");
 	
 	
 		try {
@@ -78,12 +78,12 @@ public class RequestController {
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			HttpEntity<RequestDto> entity = new HttpEntity<>(reqDto,headers);
 			
-			log.info("SOLICITANDO");
+			log.info("REALIZANDO SOLICITUD");
 			
 			
-			Response res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, Response.class).getBody();	
+			ResponseDto res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, ResponseDto.class).getBody();	
 			
-			log.info("RESPONDIDO");
+			log.info("SOLICITUD REALIZADA Y RESPONDIDA");
 			return new ResponseEntity<>(res, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BadRequestException(ExceptionPost.error);
