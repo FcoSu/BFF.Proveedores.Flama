@@ -26,73 +26,53 @@ import com.everis.latam.BFF.Proveedores.Flama.Exception.BadRequestException;
 import com.everis.latam.BFF.Proveedores.Flama.Exception.ExceptionPost;
 import com.everis.latam.BFF.Proveedores.Flama.URLs.URLs;
 
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/")
 public class RequestController {
-	
-	
+
 	private HttpHeaders headers = new HttpHeaders();
-	
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	@RequestMapping(value = URLs.inputURL, method = RequestMethod.POST, consumes= "application/json")
-	public ResponseEntity<ResponseDto> sendRequest(@RequestBody RequestDto req) throws BadRequestException{
 
-			
-		ProveedorDto p = new ProveedorDto();
-		p = req.getProveedor();
-
-		
-		
-		AreaDto a = new AreaDto();
-		a = req.getArea();
-	
-		
-		SolicitanteDto ste = new SolicitanteDto();
-		ste = req.getSolicitante();
-
-		
-
-		SolicitudDto stud = new SolicitudDto();
-		stud = req.getSolicitud();
-
-		
-		RequestDto reqDto = new RequestDto();
-		reqDto.setArea(a);
-		reqDto.setDescripcion(req.getDescripcion());
-		reqDto.setProveedor(p);
-		reqDto.setSolicitante(ste);
-		reqDto.setSolicitud(stud);
-		
-		log.info("REQUEST RECIBIDA");
-	
-	
+	@RequestMapping(value = URLs.inputURL, method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<ResponseDto> sendRequest(@RequestBody RequestDto req) throws BadRequestException {
 		try {
-			
+			ProveedorDto p = new ProveedorDto();
+			p = req.getProveedor();
+
+			AreaDto a = new AreaDto();
+			a = req.getArea();
+
+			SolicitanteDto ste = new SolicitanteDto();
+			ste = req.getSolicitante();
+
+			SolicitudDto stud = new SolicitudDto();
+			stud = req.getSolicitud();
+
+			RequestDto reqDto = new RequestDto();
+			reqDto.setArea(a);
+			reqDto.setDescripcion(req.getDescripcion());
+			reqDto.setProveedor(p);
+			reqDto.setSolicitante(ste);
+			reqDto.setSolicitud(stud);
+
+			log.info("REQUEST RECIBIDA");
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity<RequestDto> entity = new HttpEntity<>(reqDto,headers);
-			
+			HttpEntity<RequestDto> entity = new HttpEntity<>(reqDto, headers);
+
 			log.info("REALIZANDO SOLICITUD");
-			
-			
-			ResponseDto res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, ResponseDto.class).getBody();	
-			
+
+			ResponseDto res = restTemplate.exchange(URLs.targetURL, HttpMethod.POST, entity, ResponseDto.class)
+					.getBody();
+
 			log.info("SOLICITUD REALIZADA Y RESPONDIDA");
 			return new ResponseEntity<>(res, HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BadRequestException(ExceptionPost.error);
 		}
-		
-		
-	
-		
-		
-		
 	}
-	}
+}
